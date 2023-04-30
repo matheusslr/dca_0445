@@ -2,18 +2,20 @@ import cv2
 
 def main():
     # Normal img
-    img = cv2.imread(r'exercicio_01\imgs\biel.png')
-    cv2.imshow('biel', img)
+    img = cv2.imread(r'exercicio_01\imgs\chihiro.jpg')
+    cv2.imshow('chihiro', img)
 
-    start_point = (50, 50)
-    end_point = (150, 200)
+    rows, cols = img.shape[:2]
 
-    # Inverted img operation
+    start_point = (cols//4, rows//4)
+    end_point = (cols - cols//4, rows - rows//4)
+
+    # Invert img operation
     for i in range(start_point[0], end_point[0]):
         for j in range(start_point[1], end_point[1]):
             img[j][i] = 255 - img[j][i]
 
-    cv2.imshow('inverted_biel', img)
+    cv2.imshow('inverted_chihiro', img)
     cv2.waitKey()
 
 
