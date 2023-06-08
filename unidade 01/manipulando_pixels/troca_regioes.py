@@ -4,6 +4,11 @@ import numpy as np
 def main():
     # Normal img
     img = cv2.imread(r'unidade 01\manipulando_pixels\imgs\totoro.jpg')
+    
+    if img is None:
+        print("Erro ao abrir a imagem")
+        exit()
+
     cv2.imshow('totoro', img)
 
     rows, cols = img.shape[:2]

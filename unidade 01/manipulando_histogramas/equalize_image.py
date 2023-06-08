@@ -6,6 +6,10 @@ range_ = [0, 256]
 
 img = cv2.imread("unidade 01\manipulando_histogramas\imgs\jiji.jpg")
 
+if img is None:
+    print("Erro ao abrir a imagem")
+    exit()
+
 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 img_eq = cv2.equalizeHist(img)
 

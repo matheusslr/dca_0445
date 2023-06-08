@@ -3,6 +3,10 @@ import cv2
 def main():
     img = cv2.imread(r'unidade 01\preenchendo_regioes\imgs\bolhas.png', cv2.COLOR_BGR2GRAY)
 
+    if img is None:
+        print("Erro ao abrir a imagem")
+        exit()
+
     rows, cols = img.shape[:2]
     obj = 0
     obj_holes = 0

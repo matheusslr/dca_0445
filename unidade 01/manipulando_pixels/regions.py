@@ -3,6 +3,11 @@ import cv2
 def main():
     # Normal img
     img = cv2.imread(r'unidade 01\manipulando_pixels\imgs\chihiro.jpg')
+    
+    if img is None:
+        print("Erro ao abrir a imagem")
+        exit()
+
     cv2.imshow('chihiro', img)
 
     rows, cols = img.shape[:2]
