@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 img = cv2.imread("unidade 01\decomposicao_img_bits\imgs\desafio-esteganografia.png")
 
@@ -7,7 +8,13 @@ if img is None:
     exit()
 
 rows, cols = img.shape[:2]
-print(img[0])
+img_carrier = np.copy(img)
+img_encoded = np.copy(img)
+nbits = 3
 
-cv2.imshow("img", img)
+img_carrier = img >> nbits << nbits
+img_encoded = img << (8 - nbits)
+
+cv2.imshow("Imagem portadora", img_carrier)
+cv2.imshow("Imagem codificada", img_encoded)
 cv2.waitKey()
