@@ -2,7 +2,7 @@ import cv2
 
 def main():
     # Normal img
-    img = cv2.imread(r'exercicio_01\imgs\chihiro.jpg')
+    img = cv2.imread(r'unidade 01\manipulando_pixels\imgs\chihiro.jpg')
     cv2.imshow('chihiro', img)
 
     rows, cols = img.shape[:2]

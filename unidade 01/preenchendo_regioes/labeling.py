@@ -1,7 +1,7 @@
 import cv2
 
 def main():
-    img = cv2.imread(r'exercicio_02\imgs\bolhas.png', cv2.COLOR_BGR2GRAY)
+    img = cv2.imread(r'unidade 01\preenchendo_regioes\imgs\bolhas.png', cv2.COLOR_BGR2GRAY)
 
     rows, cols = img.shape[:2]
     obj = 0
@@ -13,7 +13,7 @@ def main():
     # Cropping objects on edges 
     for i in range(rows):
         for j in range(cols):
-            if isObjectOnEdge(j, i, rows, cols):
+            if is_object_on_edge(j, i, rows, cols):
                 cv2.floodFill(img, None, (j, i), 0)
 
     cv2.imshow('cropped_bolhas', img)
@@ -38,7 +38,7 @@ def main():
 
     cv2.waitKey()
 
-def isObjectOnEdge(x, y, row, col):
+def is_object_on_edge(x, y, row, col):
     top_and_left = x == 0 or y == 0
     bottom_and_right = x == col - 1 or y == row - 1
     return top_and_left or bottom_and_right
