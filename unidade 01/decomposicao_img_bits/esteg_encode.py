@@ -7,7 +7,6 @@ if img is None:
     print("Erro ao abrir a imagem")
     exit()
 
-rows, cols = img.shape[:2]
 img_carrier = np.copy(img)
 img_encoded = np.copy(img)
 nbits = 3
