@@ -168,7 +168,7 @@ print("Total of {} objects".format(obj))
 print("Total of {} objects with hole".format(obj_holes))
 print("Total of {} objects without hole".format(obj - obj_holes))
 ```
-Saida:
+Saída:
 ```
 Total of 21 objects
 Total of 7 objects with hole
