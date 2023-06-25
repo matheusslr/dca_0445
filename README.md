@@ -42,7 +42,7 @@ Este código particiona a imagem em quatro quadrantes e troca suas respectivas r
   <figcaption>Figura 4: Totoro depois da troca de regiões</figcaption>
 </figure>
 
-O código da troca de regiões pode ser visualizada abaixo:
+O segmento do código da troca de regiões pode ser visualizada abaixo:
 ```python
 rows, cols = img.shape[:2]
 
@@ -60,4 +60,17 @@ new_img[rows//2:rows, cols//2:cols] = quad_1
 new_img[rows//2:rows, 0:cols//2] = quad_2
 new_img[0:rows//2, cols//2:cols] = quad_3
 ```
+
+### 2. Decomposição de imagens em planos de bits
+### 2.1 Esteganografia
+De acordo com [(N. F. Johnson e S. Jajodia, 1998)](https://ieeexplore.ieee.org/document/4655281), a esteganografia é uma técnica que envolve ocultar um arquivo dentro de outro de forma criptografada. Ao contrário da criptografia, que busca tornar as mensagens incompreensíveis, o objetivo da esteganografia é esconder a existência de uma mensagem específica, camuflando-a dentro de arquivos, como imagens, músicas, vídeos ou textos. Com essa abordagem, é possível ocultar mensagens dentro de imagens, por exemplo, sem despertar suspeitas de que algo esteja escrito nelas.
+
+No exemplo abaixo temos uma imagem contida em outra. Para descobrirmos a mensagem escondida dentro da imagem portadora usaremos operação bit a bit. Para isso, foi retirado os 5 bits mais significativos dos pixels da variável ```img_carrier``` e os 3 bits menos significativos serão alocados em uma nova variável ```img_encoded```.
+
+<figure>
+  <img
+  src="unidade 01\decomposicao_img_bits\imgs\desafio-esteganografia.png">
+  <figcaption>Figura 5: Imagem codificada</figcaption>
+</figure>
+
 
