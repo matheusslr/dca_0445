@@ -35,8 +35,8 @@ for i in range(nbins):
 img[15:15 + nbins, 15:15 + nbins] = hist_img
 img_eq[15:15 + nbins, 15:15 + nbins] = hist_img_eq
 
-cv2.imshow("video", img)
-cv2.imshow("equalised_video", img_eq)
+cv2.imshow("image", img)
+cv2.imshow("equalised_image", img_eq)
 
 cv2.waitKey()
 cv2.destroyAllWindows()
