@@ -238,7 +238,7 @@ Output:
 <figure>
   <img
   src="unidade 01\manipulando_histogramas\imgs\hist_jiji.jpg">
-  <figcaption>Figura 11: equalised_jiji.jpg</figcaption>
+  <figcaption>Figura 11: hist_jiji.jpg</figcaption>
 </figure>
 
 <figure>
@@ -321,13 +321,13 @@ Output:
     <video width="320" height="240" controls>
       <source src="unidade 01\manipulando_histogramas\imgs\hist_jiji.mp4" type="video/mp4">
     </video>
-    <figcaption>Video 02: Histograma do jiji</figcaption>
+    <figcaption>Video 02: Histograma do Jiji</figcaption>
   </figure>
   
   <figure>
     <video width="320" height="240" controls>
       <source src="unidade 01\manipulando_histogramas\imgs\equalised_jiji.mp4" type="video/mp4">
     </video>
-    <figcaption>Video 03: Histograma do jiji equalizado</figcaption>
+    <figcaption>Video 03: Histograma do Jiji equalizado</figcaption>
   </figure>
 </div>
