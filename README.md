@@ -316,16 +316,18 @@ cv2.destroyAllWindows()
 
 Output:
 
-<figure>
-  <video width="320" height="240" controls>
-    <source src="unidade 01\manipulando_histogramas\imgs\hist_jiji.mp4" type="video/mp4">
-  </video>
-  <figcaption>Video 02: Histograma do jiji</figcaption>
-</figure>
-
-<figure>
-  <video width="320" height="240" controls>
-    <source src="unidade 01\manipulando_histogramas\imgs\equalised_jiji.mp4" type="video/mp4">
-  </video>
-  <figcaption>Video 03: Histograma do jiji equalizado</figcaption>
-</figure>
+<div style="display: flex;">
+  <figure style="margin-right: 20px;">
+    <video width="320" height="240" controls>
+      <source src="unidade 01\manipulando_histogramas\imgs\hist_jiji.mp4" type="video/mp4">
+    </video>
+    <figcaption>Video 02: Histograma do jiji</figcaption>
+  </figure>
+  
+  <figure>
+    <video width="320" height="240" controls>
+      <source src="unidade 01\manipulando_histogramas\imgs\equalised_jiji.mp4" type="video/mp4">
+    </video>
+    <figcaption>Video 03: Histograma do jiji equalizado</figcaption>
+  </figure>
+</div>
