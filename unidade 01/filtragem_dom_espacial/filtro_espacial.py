@@ -7,7 +7,7 @@ def printmask(m):
             print(m[i, j], end=",")
         print()
 
-cap = cv2.VideoCapture("unidade 01\manipulando_histogramas\imgs\jiji.jpg")  # open the default camera
+cap = cv2.VideoCapture(r'unidade 01\filtragem_dom_espacial\imgs\seita_setsuko.png')  # open the default camera
 if not cap.isOpened():
     print("[ERROR]: Could not open the video")
     exit(1)
@@ -30,6 +30,12 @@ laplacian = np.array([[0, -1, 0],
 boost = np.array([[0, -1, 0],
                   [-1, 5.2, -1],
                   [0, -1, 0]], dtype=np.float32)
+
+laplgauss = np.array([[0,0,1,0,0],
+                    [0,1,2,1,0],
+                    [1,2,-16,2,1],
+                    [0,1,2,1,0],
+                    [0,0,1,0,0]], dtype=np.float32)
 
 _, frame = cap.read()
 height, width, _ = frame.shape
@@ -89,6 +95,11 @@ while True:
     elif key == ord('b'):
         mask = np.zeros((3, 3), dtype=np.float32)
         mask[:, :] = boost
+        printmask(mask)
+    elif key == ord('p'):
+        mask = np.zeros((5, 5), dtype=np.float32)
+        mask[:, :] = laplgauss
+        printmask(mask)
 
 cap.release()
 cv2.destroyAllWindows()
