@@ -1,108 +1,87 @@
 import cv2
 import numpy as np
-import math
 
-gh, gl, c, d0 = 1.0, 0.5, 1.0, 1.0
-gh_slider, gl_slider, c_slider, d0_slider = 1, 1, 1, 10
-gh_max, gl_max, c_max, d0_max = 200, 100, 100, 200
+def homomorphic_filter(image, cutoff_freq, c, gammaH, gammaL):
+    # Convertendo a imagem para escala de cinza
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    
+    # Normalizando a imagem de entrada entre 0 e 1
+    normalized = gray / 255.0
+    
+    # Aplicando a transformada de log para obter a imagem no domínio da frequência
+    spectrum = np.log1p(np.abs(np.fft.fftshift(np.fft.fft2(normalized))))
+    
+    # Definindo os parâmetros do filtro homomórfico
+    D0 = cutoff_freq  # Frequência de corte
+    
+    # Calculando a máscara do filtro homomórfico
+    rows, cols = spectrum.shape
+    center_row, center_col = int(rows / 2), int(cols / 2)
+    y = np.arange(-center_row, rows - center_row)
+    x = np.arange(-center_col, cols - center_col)
+    X, Y = np.meshgrid(x, y)
+    D = np.sqrt(X**2 + Y**2)
+    H = (gammaH - gammaL) * (1 - np.exp(-c * (D**2) / (D0**2))) + gammaL
+    
+    # Aplicando o filtro no domínio da frequência
+    filtered_spectrum = np.exp(np.fft.ifft2(np.fft.ifftshift(spectrum * H)))
+    
+    # Normalizando a imagem filtrada para o intervalo [0, 255]
+    filtered_image = np.uint8(filtered_spectrum.real * 255)
+    
+    return filtered_image, H
 
-def swapQuadrants(imagem):
-    qtd_colunas = imagem.shape[1]
-    qtd_linhas = imagem.shape[0]
-    centerX = qtd_colunas // 2
-    centerY = qtd_linhas // 2
-    imagem_modificada = np.empty_like(imagem)
-    imagem_modificada[:centerY, :centerX] = imagem[centerY:, centerX:]
-    imagem_modificada[:centerY, centerX:] = imagem[centerY:, :centerX]
-    imagem_modificada[centerY:, :centerX] = imagem[:centerY, centerX:]
-    imagem_modificada[centerY:, centerX:] = imagem[:centerY, :centerX]
-    return imagem_modificada
+def on_cutoff_trackbar(value):
+    global cutoff_freq
+    cutoff_freq = value
 
-def filtro(gl, gh, c, d0, padded):
-    dft_M, dft_N = padded.shape[0], padded.shape[1]
-
-    dist_x = cv2.distanceTransform(np.arange(dft_N, dtype=np.uint8).reshape(1, -1), cv2.DIST_L2, 0)
-    dist_y = cv2.distanceTransform(np.arange(dft_M, dtype=np.uint8).reshape(-1, 1), cv2.DIST_L2, 0)
-    dist_squared = (dist_x ** 2 + dist_y ** 2) / (d0 ** 2)
-    exponent = -c * dist_squared
-    filter2D = (gh - gl) * (1 - np.exp(exponent)) + gl
-
-    cv2.imshow("filtro", filter2D)
-
-    filter2D = cv2.normalize(filter2D, None, 0, 1, cv2.NORM_MINMAX)
-    filter = np.dstack([filter2D.astype(np.float32), np.zeros_like(filter2D).astype(np.float32)])
-
-    return filter
-
-def aplicar_filtro():
-    global gh, gl, c, d0
-    dft_M = cv2.getOptimalDFTSize(image.shape[0])
-    dft_N = cv2.getOptimalDFTSize(image.shape[1])
-    padded = cv2.copyMakeBorder(image, 0, dft_M - image.shape[0], 0, dft_N - image.shape[1], cv2.BORDER_CONSTANT, value=0)
-
-    planos = [np.float32(padded), np.zeros_like(padded, dtype=np.float32)]
-    complexImage = cv2.merge(planos)
-
-    complexImage = cv2.dft(complexImage)
-    complexImage = swapQuadrants(complexImage)
-    filter = filtro(gl, gh, c, d0, padded)
-
-    complexImage = cv2.mulSpectrums(complexImage, filter, 0)
-
-    complexImage = swapQuadrants(complexImage)
-    complexImage = cv2.idft(complexImage)
-
-    planos = cv2.split(complexImage)
-    result = planos[0]
-
-    result = cv2.normalize(result, None, 0, 1, cv2.NORM_MINMAX)
-
-    return result
-
-
-def on_trackbar_gh(value):
-    global gh
-    gh = value/100.0
-
-def on_trackbar_gl(value):
-    global gl
-    gl = value /100.0
-
-def on_trackbar_c(value):
+def on_c_trackbar(value):
     global c
-    c = value/10.0
+    c = value / 100.0
 
-def on_trackbar_d0(value):
-    global d0
-    d0 = value
+def on_gammah_trackbar(value):
+    global gammaH
+    gammaH = value / 100.0
 
-image = cv2.imread(r'unidade 02\filtro_homomorfico\img\local_escuro.jpg', cv2.IMREAD_GRAYSCALE)
-cv2.imshow("original", image)
-if image is None:
-    print("Erro abrindo imagem")
-    exit(1)
+def on_gammal_trackbar(value):
+    global gammaL
+    gammaL = value / 100.0
 
-cv2.namedWindow("img_final")
-cv2.namedWindow("trackbars")
+# Carregando a imagem
+image = cv2.imread(r'unidade 02\filtro_homomorfico\img\ceu_escuro.jpg')
 
-TrackbarName = "gh - {}".format(gh_max)
-cv2.createTrackbar(TrackbarName, "trackbars", gh_slider, gh_max, on_trackbar_gh)
+# Inicializando os valores dos parâmetros
+cutoff_freq = 10
+c = 1.0
+gammaH = 1.5
+gammaL = 0.5
 
-TrackbarName = "gl - {}".format(gl_max)
-cv2.createTrackbar(TrackbarName, "trackbars", gl_slider, gl_max, on_trackbar_gl)
+# Criando a janela do OpenCV
+cv2.namedWindow('Filtro Homomórfico')
+cv2.namedWindow('Filtro')
 
-TrackbarName = "c - {}".format(c_max)
-cv2.createTrackbar(TrackbarName, "trackbars", c_slider, c_max, on_trackbar_c)
-
-TrackbarName = "d0 - {}".format(d0_max)
-cv2.createTrackbar(TrackbarName, "trackbars", d0_slider, d0_max, on_trackbar_d0)
+# Criando os trackbars
+cv2.createTrackbar('Cutoff', 'Filtro Homomórfico', cutoff_freq, 50, on_cutoff_trackbar)
+cv2.createTrackbar('c', 'Filtro Homomórfico', int(c * 100), 200, on_c_trackbar)
+cv2.createTrackbar('gammaH', 'Filtro Homomórfico', int(gammaH * 100), 200, on_gammah_trackbar)
+cv2.createTrackbar('gammaL', 'Filtro Homomórfico', int(gammaL * 100), 200, on_gammal_trackbar)
 
 while True:
-    imagem_final = aplicar_filtro()
-
-    cv2.imshow("img_final", imagem_final)
-    key = cv2.waitKey(1)
-    if key == ord("q"):
+    # Aplicando o filtro homomórfico
+    filtered_image, H = homomorphic_filter(image, cutoff_freq, c, gammaH, gammaL)
+    
+    # Normalizando a imagem do filtro para o intervalo [0, 255]
+    filtered_image_norm = (H - np.min(H)) / (np.max(H) - np.min(H))
+    filtered_image_norm = np.uint8(filtered_image_norm * 255)
+    
+    # Exibindo a imagem original, a imagem filtrada e a imagem do filtro
+    cv2.imshow('Imagem original', image)
+    cv2.imshow('Imagem filtrada', filtered_image)
+    cv2.imshow('Filtro', filtered_image_norm)
+    
+    # Verificando se a tecla 'Esc' foi pressionada
+    key = cv2.waitKey(1) & 0xFF
+    if key == 27:
         break
 
 cv2.destroyAllWindows()
