@@ -7,7 +7,7 @@ def deslocaDFT(image):
     image[:cy, :cx], image[cy:, cx:] = image[cy:, cx:].copy(), image[:cy, :cx].copy()
     image[cy:, :cx], image[:cy, cx:] = image[:cy, cx:].copy(), image[cy:, :cx].copy()
 
-def on_trackbar(value, param):
+def on_trackbar():
     pass
 
 def main():
@@ -66,6 +66,7 @@ def main():
 
         cv2.imshow('Imagem original', image)
         cv2.imshow('Imagem filtrada', filtered_image)
+        cv2.imshow("Filtro", tmp)
 
         # Verifica se a tecla 'Esc' foi pressionada
         key = cv2.waitKey(1) & 0xFF
