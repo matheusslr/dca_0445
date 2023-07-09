@@ -28,19 +28,20 @@ def main():
     c = 1.0
     D0 = 20
 
-    cv2.namedWindow('Filtro Homomórfico')
+    cv2.namedWindow('Filtro Homomorfico', cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('Filtro Homomorfico', 600, 400)
 
-    cv2.createTrackbar('gammaH', 'Filtro Homomórfico', int(gammaH * 10), 100, on_trackbar)
-    cv2.createTrackbar('gammaL', 'Filtro Homomórfico', int(gammaL * 10), 100, on_trackbar)
-    cv2.createTrackbar('c', 'Filtro Homomórfico', int(c * 100), 100, on_trackbar)
-    cv2.createTrackbar('D0', 'Filtro Homomórfico', D0, 100, on_trackbar)
+    cv2.createTrackbar('gammaH', 'Filtro Homomorfico', int(gammaH * 10), 100, on_trackbar)
+    cv2.createTrackbar('gammaL', 'Filtro Homomorfico', int(gammaL * 10), 100, on_trackbar)
+    cv2.createTrackbar('c', 'Filtro Homomorfico', int(c * 100), 100, on_trackbar)
+    cv2.createTrackbar('D0', 'Filtro Homomorfico', D0, 100, on_trackbar)
 
     while True:
         # Atualiza os parâmetros do filtro homomórfico
-        gammaH = cv2.getTrackbarPos('gammaH', 'Filtro Homomórfico') / 10.0
-        gammaL = cv2.getTrackbarPos('gammaL', 'Filtro Homomórfico') / 10.0
-        c = cv2.getTrackbarPos('c', 'Filtro Homomórfico') / 100.0
-        D0 = cv2.getTrackbarPos('D0', 'Filtro Homomórfico')
+        gammaH = cv2.getTrackbarPos('gammaH', 'Filtro Homomorfico') / 10.0
+        gammaL = cv2.getTrackbarPos('gammaL', 'Filtro Homomorfico') / 10.0
+        c = cv2.getTrackbarPos('c', 'Filtro Homomorfico') / 100.0
+        D0 = cv2.getTrackbarPos('D0', 'Filtro Homomorfico')
 
         # Preenche a matriz temporária
         for i in range(dft_M):
