@@ -4,16 +4,16 @@ Olá, meu nome é Matheus Rodrigues! Este repositório é focado na resolução 
 
 ## Unidade 01: Processamento de Imagens no Domínio Espacial
 ### 1. Manipulando pixels em uma imagem
-### 1.1. Negativo
+### 1.1.1. Negativo
 O programa inicial solicita ao usuário as coordenadas e captura o negativo da área retangular. O algoritmo converte a imagem em tons de cinza e, para cada pixel na região, **calcula 255 menos o valor do pixel**.
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\manipulando_pixels\imgs\chihiro.jpg">
   <figcaption>Figura 1: Chihiro antes do negativo</figcaption>
 </figure>
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\manipulando_pixels\imgs\inverted_chihiro.jpg">
   <figcaption>Figura 2: Chihiro depois do negativo</figcaption>
@@ -27,16 +27,16 @@ for i in range(start_point[0], end_point[0]):
         img[j][i] = 255 - img[j][i]
 ```
 
-### 1.2. Troca de regiões
+### 1.1.2. Troca de regiões
 Este código particiona a imagem em quatro quadrantes e troca suas respectivas regiões.
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\manipulando_pixels\imgs\totoro.jpg">
   <figcaption>Figura 3: Totoro antes da troca de regiões</figcaption>
 </figure>
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\manipulando_pixels\imgs\swapped_totoro.jpg">
   <figcaption>Figura 4: Totoro depois da troca de regiões</figcaption>
@@ -61,19 +61,19 @@ new_img[rows//2:rows, 0:cols//2] = quad_2
 new_img[0:rows//2, cols//2:cols] = quad_3
 ```
 
-### 2. Decomposição de imagens em planos de bits
-### 2.1. Esteganografia
+### 1.2. Decomposição de imagens em planos de bits
+### 1.2.1. Esteganografia
 De acordo com [(N. F. Johnson e S. Jajodia, 1998)](https://ieeexplore.ieee.org/document/4655281), a esteganografia é uma técnica que envolve ocultar um arquivo dentro de outro de forma criptografada. Ao contrário da criptografia, que busca tornar as mensagens incompreensíveis, o objetivo da esteganografia é esconder a existência de uma mensagem específica, camuflando-a dentro de arquivos, como imagens, músicas, vídeos ou textos. Com essa abordagem, é possível ocultar mensagens dentro de imagens, por exemplo, sem despertar suspeitas de que algo esteja escrito nelas.
 
 No exemplo abaixo temos uma imagem contida em outra. Para descobrirmos a mensagem escondida dentro da imagem portadora usaremos operação bit a bit. Para isso, foi retirado os 5 bits mais significativos dos pixels da variável ```img_carrier``` e os 3 bits menos significativos serão alocados em uma nova variável ```img_encoded```.
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\decomposicao_img_bits\imgs\desafio-esteganografia.png">
   <figcaption>Figura 5: Imagem codificada</figcaption>
 </figure>
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\decomposicao_img_bits\imgs\imagem_decodificada.png">
   <figcaption>Figura 6: Imagem escondida</figcaption>
@@ -103,13 +103,13 @@ cv2.imshow("Imagem codificada", img_encoded)
 cv2.waitKey()
 ```
 
-### 3. Preenchendo Regiões
-### 3.1. Labeling
+### 1.3. Preenchendo Regiões
+### 1.3.1. Labeling
 O objetivo deste programa é contar os objetos da imagem, distinguindo entre aqueles com e sem buracos.
 
 Primeiro, temos a imagem:
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\preenchendo_regioes\imgs\bolhas.png">
   <figcaption>Figura 7: bolhas.png</figcaption>
@@ -117,7 +117,7 @@ Primeiro, temos a imagem:
 
 Após a leitura da Figura 7, é feito um pré-processamento, retirando as bolhas que tocam as bordas da imagem. O resultado é a Figura abaixo:
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\preenchendo_regioes\imgs\cropped_bolhas.png">
   <figcaption>Figura 8: cropped_bolhas.png</figcaption>
@@ -140,7 +140,7 @@ def is_object_on_edge(x, y, row, col):
 
 Em seguida, é mudado o fundo da imagem para facilitar a contagem de buracos nas bolhas. A imagem resultante é a Figura 9.
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\preenchendo_regioes\imgs\new_background_bolhas.png">
   <figcaption>Figura 9: new_background_bolhas.png</figcaption>
@@ -175,14 +175,14 @@ Total of 7 objects with hole
 Total of 14 objects without hole
 ```
 
-### 4. Manipulação de histogramas
-### 4.1. Equalização de imagem
+### 1.4. Manipulação de histogramas
+### 1.4.1. Equalização de imagem
 
 O algoritmo a seguir executa a equalização do histograma em uma imagem e exibe o resultado.
 
 Imagem original:
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\manipulando_histogramas\imgs\jiji.jpg">
   <figcaption>Figura 10: Jiji.jpg</figcaption>
@@ -235,25 +235,25 @@ cv2.destroyAllWindows()
 
 Output:
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\manipulando_histogramas\imgs\hist_jiji.jpg">
   <figcaption>Figura 11: hist_jiji.jpg</figcaption>
 </figure>
 
-<figure>
+<figure align=center>
   <img
   src="unidade 01\manipulando_histogramas\imgs\equalised_jiji.jpg">
   <figcaption>Figura 12: equalised_jiji.jpg</figcaption>
 </figure>
 
 
-### 4.2. Equalização de vídeo
+### 1.4.2. Equalização de vídeo
 O mesmo processo é aplicado aqui, mas agora em vídeo.
 
 Vídeo original:
 
-<figure>
+<figure align=center>
   <video width="320" height="240" controls>
     <source src="unidade 01\manipulando_histogramas\imgs\jiji.mp4" type="video/mp4">
   </video>
@@ -317,14 +317,14 @@ cv2.destroyAllWindows()
 Output:
 
 <div style="display: flex;">
-  <figure style="margin-right: 20px;">
+  <figure style="margin-right: 20px;" align=center>
     <video width="320" height="240" controls>
       <source src="unidade 01\manipulando_histogramas\imgs\hist_jiji.mp4" type="video/mp4">
     </video>
     <figcaption>Video 02: Histograma do Jiji</figcaption>
   </figure>
   
-  <figure>
+  <figure align=center>
     <video width="320" height="240" controls>
       <source src="unidade 01\manipulando_histogramas\imgs\equalised_jiji.mp4" type="video/mp4">
     </video>
@@ -332,12 +332,12 @@ Output:
   </figure>
 </div>
 
-### 5. Filtragem no domínio espacial
+### 1.5 Filtragem no domínio espacial
 Ao executar o código, a imagem passa por uma filtragem usando vários kernels, conforme ilustrado abaixo.
 
 Imagem original:
 
-<figure>
+<figure align=center>
   <img src="unidade 01\filtragem_dom_espacial\imgs\seita_setsuko.png">
   <figcaption>Figura 13: Seita e Setsuko</figcaption>
 </figure>
@@ -454,24 +454,139 @@ cv2.destroyAllWindows()
 
 Outputs:
 
-<figure>
+<figure align=center>
   <img src="unidade 01\filtragem_dom_espacial\imgs\seita_setsuko_horizontal.png">
   <figcaption>Figura 14: Seita e Setsuko após o filtro Sobel Horizontal</figcaption>
 </figure>
 
-<figure>
+<figure align=center>
   <img src="unidade 01\filtragem_dom_espacial\imgs\seita_setsuko_vertical.png">
   <figcaption>Figura 15: Seita e Setsuko após o filtro Sobel Vertical</figcaption>
 </figure>
 
-<figure>
+<figure align=center>
   <img src="unidade 01\filtragem_dom_espacial\imgs\seita_setsuko_laplacian.png">
   <figcaption>Figura 15: Seita e Setsuko após o filtro Laplaciano</figcaption>
 </figure>
 
-<figure>
+<figure align=center>
   <img src="unidade 01\filtragem_dom_espacial\imgs\seita_setsuko_laplgauss.png">
   <figcaption>Figura 16: Seita e Setsuko após o filtro Laplaciano + Gaussiano</figcaption>
 </figure>
 
 Após visualizar seus respectivos resultados, podemos observar que os contornos da operação da filtragem Laplaciano + Gaussiano são mais realçados em relação aos outros filtros.
+
+## Unidade 02: Processamento de Imagens no Domínio da Frequência
+### 2.1. Filtro Homomórfico
+Conforme mencionado por Gonzalez e Woods (2010), a filtragem homomórfica utiliza o modelo de iluminação-refletância para aprimorar a aparência de uma imagem, realizando simultaneamente a compressão da faixa de intensidade e o realce de contraste. Esse método (representado na Figura 17) envolve as seguintes etapas: aplicação da função logaritmo natural à imagem f(x, y); aplicação da Transformada Discreta de Fourier (DFT - Discrete Fourier Transform); utilização de um filtro passa-alta ou passa-baixa; aplicação da Transformada Discreta de Fourier Inversa (IDFT - Inverse Discrete Fourier Transform); e, por fim, a aplicação da função exponencial.
+
+<figure align=center>
+  <img src="unidade 02\filtro_homomorfico\img\passos_filtragem_homomorfica.drawio.png">
+  <figcaption>Figura 17: Passos da filtragem homomórfica</figcaption>
+</figure>
+
+Como exercício, foi solicitado a implementação do filtro homomórfico para melhorar imagens com iluminação irregular, bem como a criação/coleta de uma cena mal iluminada para que fosse necessário o ajuste da sua iluminosidade. A imagem escolhida pode ser visualizada abaixo:
+
+<figure align=center>
+  <img src="unidade 02\filtro_homomorfico\img\sala_escura.jpg">
+  <figcaption>Figura 18: Imagem mal iluminada</figcaption>
+</figure>
+
+Após a execução do código, podemos visualizar a imagem filtrada e o filtro passa-alta utilizado, respectivamente:
+
+<figure align=center>
+  <img src="unidade 02\filtro_homomorfico\img\img_filtrada.png">
+  <figcaption>Figura 19: Imagem filtrada</figcaption>
+</figure>
+
+<figure align=center>
+  <img src="unidade 02\filtro_homomorfico\img\filtro.png">
+  <figcaption>Figura 20: Filtro passa-alta</figcaption>
+</figure>
+
+O código desenvolvido pode ser visto a seguir:
+
+```python
+import cv2
+import numpy as np
+
+def deslocaDFT(image):
+    cx = image.shape[1] // 2
+    cy = image.shape[0] // 2
+    image[:cy, :cx], image[cy:, cx:] = image[cy:, cx:].copy(), image[:cy, :cx].copy()
+    image[cy:, :cx], image[:cy, cx:] = image[:cy, cx:].copy(), image[cy:, :cx].copy()
+
+def on_trackbar():
+    pass
+
+def main():
+    image = cv2.imread(r'unidade 02\filtro_homomorfico\img\sala_escura.jpg', cv2.IMREAD_GRAYSCALE)
+
+    # Calcula os tamanhos ótimos para o cálculo da DFT
+    dft_M = cv2.getOptimalDFTSize(image.shape[0])
+    dft_N = cv2.getOptimalDFTSize(image.shape[1])
+
+    # Realiza o padding da imagem
+    padded = cv2.copyMakeBorder(image, 0, dft_M - image.shape[0], 0, dft_N - image.shape[1], cv2.BORDER_CONSTANT, value=0)
+
+    # Cria a matriz temporária para o filtro
+    tmp = np.zeros((dft_M, dft_N), dtype=np.float32)
+
+    gammaH = 1.0
+    gammaL = 1.0
+    c = 1.0
+    D0 = 20
+
+    cv2.namedWindow('Filtro Homomorfico', cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('Filtro Homomorfico', 600, 400)
+
+    cv2.createTrackbar('gammaH', 'Filtro Homomorfico', int(gammaH * 10), 100, on_trackbar)
+    cv2.createTrackbar('gammaL', 'Filtro Homomorfico', int(gammaL * 10), 100, on_trackbar)
+    cv2.createTrackbar('c', 'Filtro Homomorfico', int(c * 100), 100, on_trackbar)
+    cv2.createTrackbar('D0', 'Filtro Homomorfico', D0, 100, on_trackbar)
+
+    while True:
+        # Atualiza os parâmetros do filtro homomórfico
+        gammaH = cv2.getTrackbarPos('gammaH', 'Filtro Homomorfico') / 10.0
+        gammaL = cv2.getTrackbarPos('gammaL', 'Filtro Homomorfico') / 10.0
+        c = cv2.getTrackbarPos('c', 'Filtro Homomorfico') / 100.0
+        D0 = cv2.getTrackbarPos('D0', 'Filtro Homomorfico')
+
+        # Preenche a matriz temporária
+        for i in range(dft_M):
+            for j in range(dft_N):
+                tmp[i, j] = (gammaH - gammaL) * (1.0 - np.exp(-1.0 * c * ((((i - dft_M // 2) ** 2) + ((j - dft_N // 2) ** 2)) / (D0 ** 2)))) + gammaL
+
+        # Calcula a DFT
+        complexImage = cv2.dft(np.float32(padded), flags=cv2.DFT_COMPLEX_OUTPUT)
+
+        # Realiza a troca de quadrantes
+        deslocaDFT(complexImage)
+
+        # Aplica o filtro frequencial
+        filtered = cv2.mulSpectrums(complexImage, cv2.merge([tmp, tmp]), 0)
+
+        # Troca novamente os quadrantes
+        deslocaDFT(filtered)
+
+        # Calcula a DFT inversa
+        idft = cv2.idft(filtered)
+
+        planes = cv2.split(idft)
+        result = planes[0]
+
+        filtered_image = cv2.normalize(result, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX)
+
+        cv2.imshow('Imagem original', image)
+        cv2.imshow('Imagem filtrada', filtered_image)
+        cv2.imshow("Filtro", tmp)
+
+        # Verifica se a tecla 'Esc' foi pressionada
+        key = cv2.waitKey(1) & 0xFF
+        if key == 27:
+            break
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    main()
+```
