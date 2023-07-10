@@ -11,7 +11,7 @@ def on_trackbar():
     pass
 
 def main():
-    image = cv2.imread(r'unidade 02\filtro_homomorfico\img\ceu_escuro.jpg', cv2.IMREAD_GRAYSCALE)
+    image = cv2.imread(r'unidade 02\filtro_homomorfico\img\sala_escura.jpg', cv2.IMREAD_GRAYSCALE)
 
     # Calcula os tamanhos ótimos para o cálculo da DFT
     dft_M = cv2.getOptimalDFTSize(image.shape[0])
@@ -23,7 +23,7 @@ def main():
     # Cria a matriz temporária para o filtro
     tmp = np.zeros((dft_M, dft_N), dtype=np.float32)
 
-    gammaH = 15.0
+    gammaH = 1.0
     gammaL = 1.0
     c = 1.0
     D0 = 20
@@ -61,9 +61,12 @@ def main():
         deslocaDFT(filtered)
 
         # Calcula a DFT inversa
-        idft = cv2.idft(filtered, flags=cv2.DFT_SCALE | cv2.DFT_REAL_OUTPUT)
+        idft = cv2.idft(filtered)
 
-        filtered_image = cv2.normalize(idft, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+        planes = cv2.split(idft)
+        result = planes[0]
+
+        filtered_image = cv2.normalize(result, None, alpha=0, beta=1, norm_type=cv2.NORM_MINMAX)
 
         cv2.imshow('Imagem original', image)
         cv2.imshow('Imagem filtrada', filtered_image)
@@ -73,7 +76,6 @@ def main():
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             break
-
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
