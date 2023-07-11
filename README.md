@@ -317,7 +317,7 @@ cv2.destroyAllWindows()
 Output:
 
 <div style="display: flex;">
-  <figure style="margin-right: 20px;" align=center>
+  <figure align=center>
     <video width="320" height="240" controls>
       <source src="unidade 01\manipulando_histogramas\imgs\hist_jiji.mp4" type="video/mp4">
     </video>
