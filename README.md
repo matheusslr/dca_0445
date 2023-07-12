@@ -690,3 +690,46 @@ Outputs:
   <img src="unidade 02\canny_pontilhismo\img\ponyo_pointillism.png">
   <figcaption>Figura 22: ponyo_pointillism.png</figcaption>
 </figure>
+
+### 2.3. Quantização vetorial com k-means
+Nesse exemplo, é pedido para ser feito a implementação de um programa exemplo em que a execução do código se dê usando o parâmetro ``nRodadas=1`` e iniciar os centróides de forma aleatória trocando ``KMEANS_PP_CENTERS`` por ``KMEANS_RANDOM_CENTERS``. Ao final, realizasse a execução do algoritmo em 10 rodadas diferentes afim de comparar as imagens produzidas.
+
+Durante a implementação foi realizada a troca do parâmetro ``KMEANS_PP_CENTERS`` para ``KMEANS_RANDOM_CENTERS`` e ``nRodadas`` para 1. Em seguida, para as 10 rodadas diferentes, foi feito um ``for`` englobando todo o código, indo de 0 a 9, de forma a otimizar a geração das imagens. Por fim, com as imagens geradas, foi transformadas as fotos em ``.gif`` para melhor comparação.
+
+```python
+import cv2
+import numpy as np
+
+nClusters = 8
+nRodadas = 1
+
+img = cv2.imread(r'unidade 02\kmeans\img\sushi.jpg', cv2.IMREAD_COLOR)
+
+if img is None:
+    print("Erro ao abrir imagem")
+    exit()
+
+for i in range(10):
+    samples = img.reshape(-1, 3).astype(np.float32)
+
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10000, 0.0001)
+    _, labels, centers = cv2.kmeans(samples, nClusters, None, criteria, nRodadas, cv2.KMEANS_RANDOM_CENTERS)
+
+    labels = labels.reshape(img.shape[:2])
+    rotulada = np.zeros_like(img)
+
+    for y in range(img.shape[0]):
+        for x in range(img.shape[1]):
+            indice = labels[y, x]
+            rotulada[y, x] = centers[indice]
+
+    cv2.imwrite("sushi_clusterizado_{}.png".format(i), rotulada)
+
+```
+
+Output:
+
+<figure align=center>
+  <img src="unidade 02\kmeans\img\sushi_clustered.gif">
+  <figcaption>Figura 23: sushi_clustered.gif</figcaption>
+</figure>
