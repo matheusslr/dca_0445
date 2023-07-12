@@ -63,7 +63,7 @@ new_img[0:rows//2, cols//2:cols] = quad_3
 
 ### 1.2. Decomposição de imagens em planos de bits
 ### 1.2.1. Esteganografia
-De acordo com [(N. F. Johnson e S. Jajodia, 1998)](https://ieeexplore.ieee.org/document/4655281), a esteganografia é uma técnica que envolve ocultar um arquivo dentro de outro de forma criptografada. Ao contrário da criptografia, que busca tornar as mensagens incompreensíveis, o objetivo da esteganografia é esconder a existência de uma mensagem específica, camuflando-a dentro de arquivos, como imagens, músicas, vídeos ou textos. Com essa abordagem, é possível ocultar mensagens dentro de imagens, por exemplo, sem despertar suspeitas de que algo esteja escrito nelas.
+De acordo com [N. F. Johnson e S. Jajodia (1998)](https://ieeexplore.ieee.org/document/4655281), a esteganografia é uma técnica que envolve ocultar um arquivo dentro de outro de forma criptografada. Ao contrário da criptografia, que busca tornar as mensagens incompreensíveis, o objetivo da esteganografia é esconder a existência de uma mensagem específica, camuflando-a dentro de arquivos, como imagens, músicas, vídeos ou textos. Com essa abordagem, é possível ocultar mensagens dentro de imagens, por exemplo, sem despertar suspeitas de que algo esteja escrito nelas.
 
 No exemplo abaixo temos uma imagem contida em outra. Para descobrirmos a mensagem escondida dentro da imagem portadora usaremos operação bit a bit. Para isso, foi retirado os 5 bits mais significativos dos pixels da variável ```img_carrier``` e os 3 bits menos significativos serão alocados em uma nova variável ```img_encoded```.
 
@@ -581,7 +581,6 @@ def main():
         cv2.imshow('Imagem filtrada', filtered_image)
         cv2.imshow("Filtro", tmp)
 
-        # Verifica se a tecla 'Esc' foi pressionada
         key = cv2.waitKey(1) & 0xFF
         if key == 27:
             break
@@ -590,3 +589,104 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+
+### 2.2. Canny e a arte com pontilhismo
+O algoritmo de Canny é amplamente utilizado em processamento de imagens e visão artificial para detecção de bordas, o que pode melhorar algoritmos de segmentação automática ou para encontrar objetos em cenas e pontos de interesse [[1]](http://www.inf.ufsc.br/~aldo.vw/visao/2000/Bordas/index.html). No entanto, nesta lição, o objetivo é usar o algoritmo para desenvolver arte digital. A proposta é utilizar uma imagem de referência para criar uma nova imagem com efeitos artísticos pontilhistas. 
+
+Para tal exercício, foi utilizado a Figura 21 como exemplo:
+
+<figure align=center>
+  <img src="unidade 02\canny_pontilhismo\img\ponyo.jpg">
+  <figcaption>Figura 21: Ponyo.jpg</figcaption>
+</figure>
+
+Manipulando os códigos fornecidos pelo professor (``canny.cpp`` e ``pontilhismo.cpp``), como referência, fez-se a mesclagem de ambas funcionalidades.
+
+Em seguida, foi usado o trecho da formação do pontilhismo e criado uma função denomidada ``pointillism``. Nela modificou-se o ``for`` para o pontilhismo ser aplicado quando o pixel da matriz ``border`` for igual a 255 com raio descrito pelas barras deslizantes (``trackbars``), caso contrário o pontilhismo gerado nesse pixel seria de raio igual a 2.
+
+```python
+import cv2
+import numpy as np
+import random
+
+STEP = 5
+JITTER = 3
+RAIO = 3
+
+top_slider = 10
+top_slider_max = 200
+
+def pointillism(image, border, points):
+    height, width = image.shape[:2]
+    x_indices = list(range(0, height, STEP))
+    y_indices = list(range(0, width, STEP))
+    random.shuffle(x_indices)
+    random.shuffle(y_indices)
+
+    for i in x_indices:
+        for j in y_indices:
+            if border[i, j] == 255:
+                x = i + random.randint(-JITTER, JITTER + 1)
+                y = j + random.randint(-JITTER, JITTER + 1)
+                color = image[x, y]
+                cv2.circle(points, (y, x), RAIO, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+            else:
+                x = i + random.randint(-JITTER, JITTER + 1)
+                y = j + random.randint(-JITTER, JITTER + 1)
+                color = image[x, y]
+                cv2.circle(points, (y, x), 2, (int(color[0]), int(color[1]), int(color[2])), -1, cv2.LINE_AA)
+
+    cv2.imshow("cannypoints", points)
+
+def on_trackbar_canny(value):
+    global border
+    _, thresholded = cv2.threshold(imageGray, value, 255, cv2.THRESH_BINARY)
+    border = cv2.Canny(thresholded, 30, 90)
+    pointillism(image, border, points)
+    cv2.imshow("canny", border)
+
+def on_trackbar_cannypoints(value):
+    pointillism(image, border, points)
+
+image = cv2.imread(r'unidade 02\canny_pontilhismo\img\ponyo.jpg', cv2.IMREAD_COLOR)
+imageGray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+points = image.copy()
+border = np.zeros(imageGray.shape, dtype=np.uint8)
+
+if image is None:
+    print("Erro ao abrir a imagem")
+    exit()
+
+cv2.namedWindow("cannypoints", cv2.WINDOW_NORMAL)
+cv2.createTrackbar("Threshold inferior", "cannypoints", top_slider, top_slider_max, on_trackbar_canny)
+on_trackbar_canny(top_slider)
+
+cv2.namedWindow("trackbars", cv2.WINDOW_NORMAL)
+
+cv2.createTrackbar("STEP", "trackbars", STEP, 100, on_trackbar_cannypoints)
+on_trackbar_cannypoints(STEP)
+
+cv2.createTrackbar("JITTER", "trackbars", JITTER, 100, on_trackbar_cannypoints)
+on_trackbar_cannypoints(JITTER)
+
+cv2.createTrackbar("RAIO", "trackbars", RAIO, 100, on_trackbar_cannypoints)
+on_trackbar_cannypoints(RAIO)
+
+while True:
+    if cv2.waitKey(1) == 27:
+        cv2.imwrite("edges_detected.png", border)
+        cv2.imwrite("ponyo_pointillism.png", points)
+        break
+```
+
+Outputs:
+
+<figure align=center>
+  <img src="unidade 02\canny_pontilhismo\img\edges_detected.png">
+  <figcaption>Figura 22: edges_detected.png</figcaption>
+</figure>
+
+<figure align=center>
+  <img src="unidade 02\canny_pontilhismo\img\ponyo_pointillism.png">
+  <figcaption>Figura 22: ponyo_pointillism.png</figcaption>
+</figure>
